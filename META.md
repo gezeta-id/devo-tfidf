@@ -6,3 +6,6 @@ project itself out of the context of the take-home test.
    generic _truth-test_ is set up to verify JUnit is working correctly. Maven wrappers are included
    as a courtesy, just in case.
  - For now, development will be done on the **master** branch.
+ - I've decided to use JCommander to parse command line arguments. It's simple enough and works reasonably well.
+
+
