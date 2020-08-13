@@ -6,6 +6,8 @@
 
 target/
 .mvn/
+.idea/
+*.iml
 
 # Package Files #
 *.jar
