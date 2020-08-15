@@ -8,10 +8,10 @@ public class StoreTest {
     @Test
     public void shouldStoreFileDataAndCountIt() {
         Store st = new Store("first second third");
-        st.addFileData("second", "doc1.txt", 0.045f);
+        st.addFileData("second", "doc1.txt", 0.045d);
 
         Assert.assertEquals(1, st.getTotalNumberOfFiles());
-        Assert.assertEquals(0.045f, st.getTf("second", "doc1.txt"),0);
+        Assert.assertEquals(0.045d, st.getTf("second", "doc1.txt"),0);
         Assert.assertEquals(0f, st.getTf("third", "doc1.txt"),0);
         Assert.assertEquals(0f, st.getTf("second", "doc2.txt"),0);
     }

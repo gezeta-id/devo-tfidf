@@ -20,14 +20,5 @@ Processing new files will be done with the ServiceWatch API and this process wil
 Then, at the interval established by the user, I will calculate _idf_, then generalized _tf/idf_ and finally pick the top N results and refresh the output with that.
 
 
-For tomorrow:
-
-The FileProcessor is done and we get _tf_'s calculated.
-
-List of to-do tasks:
-
- 1. Write the Timed Task that calculates _idf_'s and _tf/idf_'s and outputs the result.
- 1. Write the ServiceWatcher that loads up new files into the store.
- 1. Get a set of test files. Even better: get two sets.
- 1. Add some more tests.
- 1. Refactor the helpers package into something a bit better structured.
+ - There's a `samples` folder with a few movie scripts that can be used as a test set.
+ 

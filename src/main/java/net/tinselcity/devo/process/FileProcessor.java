@@ -32,7 +32,7 @@ public class FileProcessor {
             Integer totalWords = 0;
 
             while (line != null) {
-                String[] words = line.toLowerCase().split(" ");
+                String[] words = line.toLowerCase().split("\\P{L}+");
 
                 for (String word: words) {
                     if (terms.contains(word)) {
@@ -44,8 +44,8 @@ public class FileProcessor {
                 line = reader.readLine();
             }
 
-            for (Map.Entry<String, Integer> count: occurrences.entrySet()) {
-                store.addFileData(count.getKey(), filename, ((float) count.getValue()) / totalWords);
+            for (String term: this.terms) {
+                store.addFileData(term, filename, (double) (occurrences.get(term) != null?occurrences.get(term):0d) / totalWords);
             }
 
 
