@@ -17,10 +17,15 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.System.exit;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
 
 
 public class Main {
     private Config config;
+
+    public Main(Config config) {
+        this.config = config;
+    }
 
     public static void main( String[] args ) {
         Config c = new Config();
@@ -45,10 +50,13 @@ public class Main {
         main.run();
     }
 
-    public Main(Config config) {
-        this.config = config;
+    // Just to avoid some casting exception warnings we wrap this in a method ans suppress
+    @SuppressWarnings("unchecked")
+    static <T> WatchEvent<T> cast(WatchEvent<?> event) {
+        return (WatchEvent<T>)event;
     }
 
+    // TODO: All the output related methods would be better in a separate class
     private final static void clearConsole() {
         try {
             if (System.getProperty("os.name").contains("Windows")) {
@@ -60,10 +68,39 @@ public class Main {
         } catch (Exception e) { }
     }
 
+
+    // TODO: All the output related methods would be better in a separate class
     private static void output(List<Map.Entry<String, Double>> results) {
         clearConsole();
-        System.out.println("Results updated at: " + new Date());
+        System.out.println("Results updated at: " + new Date()+"\n");
         results.forEach((e)->System.out.printf("%s -> %.6f \n", e.getKey(), e.getValue()));
+        System.out.println("");
+    }
+
+    private void watchDir(Path p, FileProcessor fp, int period) throws IOException {
+
+        WatchService ws = FileSystems.getDefault().newWatchService();
+        p.register(ws, ENTRY_CREATE);
+
+        for (;;) {
+            WatchKey wkey;
+            try {
+                wkey = ws.take();
+            } catch (InterruptedException e) {
+                return;
+            }
+
+            for (WatchEvent<?> event: wkey.pollEvents()) {
+                if (event.kind() != ENTRY_CREATE) continue; // Just in case
+                WatchEvent<Path> ev = cast(event);
+                Path name = ev.context();
+                if (Files.isDirectory(p.resolve(name), LinkOption.NOFOLLOW_LINKS)) return; // We ignore directories
+
+                fp.processFile(name.toString());
+            }
+            wkey.reset();
+        }
+
     }
 
     private void run() {
@@ -79,7 +116,9 @@ public class Main {
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(()->output(TfidfCalculator.calculateTop(config.resultsToShow, store)), 0, config.period, TimeUnit.SECONDS);
 
-        
+        try {
+            watchDir(Paths.get(config.directory), fp, config.period);
+        } catch (IOException e) { }
 
     }
 }
