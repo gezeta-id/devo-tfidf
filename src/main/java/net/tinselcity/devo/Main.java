@@ -9,8 +9,12 @@ import net.tinselcity.devo.process.TfidfCalculator;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.System.exit;
 
@@ -58,6 +62,7 @@ public class Main {
 
     private static void output(List<Map.Entry<String, Double>> results) {
         clearConsole();
+        System.out.println("Results updated at: " + new Date());
         results.forEach((e)->System.out.printf("%s -> %.6f \n", e.getKey(), e.getValue()));
     }
 
@@ -71,10 +76,10 @@ public class Main {
 
         output(TfidfCalculator.calculateTop(config.resultsToShow, store));
 
-        //Todo:
-        /*
-         * 1. Set up the main output loop that calculates and prints results every config.period seconds
-         * 2. Set up the ServiceWatcher that processes new files into the store
-         */
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+        executorService.scheduleAtFixedRate(()->output(TfidfCalculator.calculateTop(config.resultsToShow, store)), 0, config.period, TimeUnit.SECONDS);
+
+        
+
     }
 }
