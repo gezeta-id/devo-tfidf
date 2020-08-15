@@ -40,7 +40,7 @@ public class Main {
             System.out.println("\n"+pe.getMessage()+"\n");
 
             //Todo: Create a simple wrapper script and change this to reflect that name
-            pe.getJCommander().setProgramName("java -jar target/tfidf-1.0-SNAPSHOT.jar");
+            pe.getJCommander().setProgramName("java -jar target/tfidf.jar");
             pe.getJCommander().usage();
 
             exit(-1);

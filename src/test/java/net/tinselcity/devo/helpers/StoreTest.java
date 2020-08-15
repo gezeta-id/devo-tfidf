@@ -20,6 +20,7 @@ public class StoreTest {
     //  - Check that passing a non term is ignored
     //  - Better tests for TotalNumberOfFiles
     //       - if tf passed is 0, it should still increment totalNumberOfFiles
+    //  - Check that if we pass an already stored file, it _won't_ be overwritten. (This one probably fails currently)
     // etc
 
 

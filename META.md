@@ -22,3 +22,16 @@ Then, at the interval established by the user, I will calculate _idf_, then gene
 
  - There's a `samples` folder with a few movie scripts that can be used as a test set.
  
+----
+
+The main task is _complete_ now. It's _far_ from perfect though.
+
+Now I _should_ spend a little more time cleaning up and refactoring a couple of things:
+
+ - There's _too much_ going on in the Main class. Output should _really_ be extracted to its own class. The file watcher probably too. Both of these are easy tasks.
+ - I **do** need more extensive testing. The Store clearly needs more testing. The calculators too.
+
+In a _real-world_ situation I would certainly take on these tasks. Given that I've already spent a **fair** amount of time developing this for a test. I will leave them pending.
+
+
+----
